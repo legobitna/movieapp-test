@@ -9,7 +9,7 @@ function App() {
 
   const callMovie = async () => {
     let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apikey}&language=en-US&page=1`;
-    console.log("url?", url);
+
     let result = await fetch(url);
     let data = await result.json();
     console.log("data", data);
