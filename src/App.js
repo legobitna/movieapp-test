@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import MoiveBoard from "./components/MovieBoard"
 
+const apikey = process.env.REACT_APP_APIKEY;
 function App() {
+  let [movieList, setMovieList] = useState(null);
+
+  const callMovie = async () => {
+    let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apikey}&language=en-US&page=1`;
+    console.log("url?", url);
+    let result = await fetch(url);
+    let data = await result.json();
+    console.log("data", data);
+
+    setMovieList(data.results);
+  };
+
+  useEffect(() => {
+    callMovie();
+  }, []);
+
+  if (movieList == null) {
+    return <h2>loading...</h2>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Bitna's Movie Cinema</h1>
+      {/* <Navigation/>
+      <FilterBoard/> */}
+      <MoiveBoard movieList={movieList}/>
+       
     </div>
   );
 }
